@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace BankId.Pages;
+namespace BankIdIssue.Pages;
 public class ExternalLoginModel :PageModel
 {
     private readonly IHttpContextAccessor _accessor;

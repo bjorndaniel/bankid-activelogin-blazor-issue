@@ -1,0 +1,56 @@
+﻿@page "/info"
+@using System.Security.Claims
+@using System.Globalization
+@inject AuthenticationStateProvider AuthProvider
+<PageTitle>Log out</PageTitle>
+@if (_user != null && _user?.Identity?.IsAuthenticated == true)
+{
+    <div class="row justify-content-center text-center">
+        <div class="col">
+            <h2 class="h4 m2-1 mt-5 text-center">Welcome @ClaimsHelper.GetClaimValue(_user.Claims, "given_name")!</h2>
+            @foreach (var c in _user.Claims)
+            {
+                <p>@($"{c.Type}: {c.Value}")</p>
+            }
+            <div class="mt-4">
+                <a class="btn btn-info btn-block" href="/logout">Log out</a>
+            </div>
+        </div>
+    </div>
+
+}
+
+@code {
+    private bool Phone { get; set; }
+    private bool Ipad { get; set; }
+    private ClaimsPrincipal? _user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await AuthProvider.GetAuthenticationStateAsync();
+
+        if (state.User?.Identity?.IsAuthenticated ?? false)
+        {
+            _user = state.User;
+        }
+        await base.OnInitializedAsync();
+    }
+
+    public static class ClaimsHelper
+{
+    public static bool TryGetClaimValue(IEnumerable<Claim> claims, string type, out Guid guid)
+    {
+        if (!Guid.TryParse(GetClaimValue(claims, type), out guid))
+        {
+            guid = Guid.Empty;
+            return false;
+        }
+        return true;
+    }
+    public static bool TryGetClaimValue(IEnumerable<Claim> claims, string type, out int number)
+        => int.TryParse(GetClaimValue(claims, type), out number);
+
+    public static string GetClaimValue(IEnumerable<Claim> claims, string type, string fallback = "-") =>
+        CultureInfo.CurrentCulture.TextInfo.ToTitleCase(claims.FirstOrDefault(x => x.Type == type)?.Value?.ToLower() ?? fallback);
+}
+ }

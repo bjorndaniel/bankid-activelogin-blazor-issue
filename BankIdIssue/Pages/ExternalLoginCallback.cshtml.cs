@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
 
-namespace BankId.Pages;
+namespace BankIdIssue.Pages;
 public class ExternalLoginCallbackModel : PageModel
 {
     private readonly IHttpContextAccessor _accessor;
@@ -19,7 +19,7 @@ public class ExternalLoginCallbackModel : PageModel
     {
         var result = await _accessor.HttpContext!.AuthenticateAsync();
         var request = _accessor.HttpContext!.Request;
-        var _baseURL = $"{request.Scheme}://{request.Host}/landingpage";
+        var _baseURL = $"{request.Scheme}://{request.Host}/info";
         if (result?.Succeeded != true)
         {
             throw new Exception("External authentication error");
