@@ -69,7 +69,6 @@ static void ConfigureBankId(WebApplicationBuilder builder)
                         builder.Configuration.GetValue<string>("ActiveLogin:BankId:ClientCertificate:Password")
                     )
                 );
-
             bankId.Configure(options =>
             {
                 options.Events = new RemoteAuthenticationEvents

@@ -109,37 +109,7 @@ public class CustomBankIdLauncher : IBankIdLauncher
         return GetQueryString(queryStringParams);
     }
 
-    private static string GetRedirectUrl(BankIdSupportedDevice device, LaunchUrlRequest request)
-    {
-        // Only use redirect url for iOS as recommended in BankID Guidelines 3.1.2
-        return device.DeviceOs == BankIdSupportedDeviceOs.Ios
-            ? GetIOsBrowserSpecificRedirectUrl(device, request.RedirectUrl)
-            : NullRedirectUrl;
-    }
-
-    private static string GetIOsBrowserSpecificRedirectUrl(BankIdSupportedDevice device, string redirectUrl)
-    {
-        // If it is a third party browser, don't specify the return URL, just the browser scheme.
-        // This will launch the browser with the last page used (the Active Login status page).
-        // If a URL is specified these browsers will open that URL in a new tab and we will lose context.
-
-        return device.DeviceBrowser switch
-        {
-            // Safari can only be launched by providing redirect url (https://...)
-            BankIdSupportedDeviceBrowser.Safari => redirectUrl,
-
-            // Normally you would supply the URL, but we just want to launch the app again
-            BankIdSupportedDeviceBrowser.Chrome => IosChromeScheme,
-            BankIdSupportedDeviceBrowser.Firefox => IosFirefoxScheme,
-
-            // Opens a new tab on app launch, so can't launch automatically
-            BankIdSupportedDeviceBrowser.Edge => string.Empty,
-            BankIdSupportedDeviceBrowser.Opera => string.Empty,
-
-            // Return empty string so user can go back manually, will catch unknown third party browsers
-            _ => string.Empty
-        };
-    }
+    private static string GetRedirectUrl(BankIdSupportedDevice device, LaunchUrlRequest request) => NullRedirectUrl;
 
     private static string Base64Encode(string value)
     {
