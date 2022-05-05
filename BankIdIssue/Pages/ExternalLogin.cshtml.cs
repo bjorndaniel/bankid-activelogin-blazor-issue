@@ -14,11 +14,9 @@ public class ExternalLoginModel :PageModel
 
 	public IActionResult OnGet(string provider)
     {
-        var request = _accessor.HttpContext!.Request;
-        var baseURL = $"https://{request.Host}";
         var props = new AuthenticationProperties
         {
-            RedirectUri = $"{baseURL}/externallogincallback",
+            RedirectUri = $"/externallogincallback",
             Items =
     {
         {"returnUrl", "~/"},

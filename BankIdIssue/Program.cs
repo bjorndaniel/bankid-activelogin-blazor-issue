@@ -1,5 +1,7 @@
 using ActiveLogin.Authentication.BankId.AspNetCore;
+using ActiveLogin.Authentication.BankId.AspNetCore.Launcher;
 using BankIdIssue.Data;
+using BankIdIssue.Helpers;
 using BankIdIssue.Shared.Resources;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -43,7 +45,7 @@ app.Run();
 
 static void ConfigureBankId(WebApplicationBuilder builder)
 {
-
+    builder.Services.AddTransient<IBankIdLauncher, CustomBankIdLauncher>();
     builder.Services
         .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie()
